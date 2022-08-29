@@ -1,0 +1,23 @@
+package ${package}.${moduleName}.service;
+
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.baomidou.mybatisplus.extension.service.IService;
+import ${package}.${moduleName}.dto.${className}DTO;
+import ${package}.${moduleName}.dto.${className}QueryParamDTO;
+import ${package}.${moduleName}.entity.${className}Entity;
+import ${package}.${moduleName}.vo.${className}VO;
+import java.util.List;
+/**
+ * ${comments}
+ *
+ * @author ${author}
+ * @date ${datetime}
+ */
+public interface I${className}Service extends IService<${className}Entity> {
+    Page<${className}VO> queryPage(${className}QueryParamDTO dto);
+    List<${className}VO> list(${className}QueryParamDTO dto);
+    void save(${className}DTO dto);
+    void update(${className}DTO dto);
+    void delete(List<String> idList);
+}
+

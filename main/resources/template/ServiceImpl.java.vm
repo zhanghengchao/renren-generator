@@ -1,0 +1,67 @@
+package ${package}.${moduleName}.service.impl;
+
+import com.baomidou.dynamic.datasource.annotation.DS;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import ${mainPath}.enums.YesOrNoEnum;
+import ${package}.${moduleName}.dto.${className}DTO;
+import ${package}.${moduleName}.dto.${className}QueryParamDTO;
+import ${package}.${moduleName}.entity.${className}Entity;
+import ${package}.${moduleName}.mapper.${className}Mapper;
+import ${package}.${moduleName}.service.I${className}Service;
+import ${package}.${moduleName}.vo.${className}VO;
+import ${mainPath}.utils.IdGenerator;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.BeanUtils;
+import org.springframework.stereotype.Service;
+import java.util.ArrayList;
+import java.util.List;
+
+
+@Slf4j
+@Service
+@DS("#tokenSession.tenant")
+public class ${className}ServiceImpl extends ServiceImpl<${className}Mapper, ${className}Entity> implements I${className}Service {
+
+    @Override
+    public Page<${className}VO> queryPage(${className}QueryParamDTO dto) {
+        Page<${className}VO> page = new Page<>();
+        baseMapper.queryPage(page, dto);
+        return page;
+    }
+
+    @Override
+    public List<${className}VO> list(${className}QueryParamDTO dto) {
+        return baseMapper.list(dto);
+    }
+
+
+    @Override
+    public void save(${className}DTO dto) {
+        ${className}Entity entity=new ${className}Entity();
+        BeanUtils.copyProperties(dto,entity);
+        entity.setId(IdGenerator.snowflake().toString());
+        entity.setDeleted(Long.valueOf(YesOrNoEnum.NO.code));
+        this.save(entity);
+    }
+
+    @Override
+    public void update(${className}DTO dto) {
+        ${className}Entity entity=new ${className}Entity();
+        BeanUtils.copyProperties(dto,entity);
+        this.updateById(entity);
+    }
+
+    @Override
+    public void delete(List<String> idList) {
+        List<${className}Entity> list=new ArrayList<>();
+        for(String id:idList){
+            ${className}Entity entity=new ${className}Entity();
+            entity.setId(id);
+            entity.setDeleted(Long.valueOf(YesOrNoEnum.YES.code));
+            list.add(entity);
+        }
+        this.updateBatchById(list);
+    }
+
+}
